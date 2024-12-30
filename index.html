@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025 Animation</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+      font-size: 5rem;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .year, .message {
+      position: relative;
+      opacity: 0;
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .year.visible, .message.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .year {
+      font-size: 5rem;
+    }
+
+    .message {
+      font-size: 2rem;
+      margin-top: 5px;
+    }
+
+    .timer {
+      position: absolute;
+      top: 10%;
+      font-size: 18rem;
+      font-weight: bold;
+    }
+
+    .firework {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: white;
+      border-radius: 50%;
+      animation: explode 1.5s ease-out forwards;
+    }
+
+    .firework.spark {
+      width: 3px;
+      height: 3px;
+      animation: sparkle 2s ease-out forwards;
+    }
+
+    @keyframes explode {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(10);
+      }
+    }
+
+    @keyframes sparkle {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(50px, 50px) scale(0.5);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="timer" id="timer">5</div>
+    <div class="year" id="year2025">2025</div>
+    <div class="message" id="happyNewYear">Happy New Year!</div>
+  </div>
+
+  <script>
+    const year2025 = document.getElementById('year2025');
+    const happyNewYear = document.getElementById('happyNewYear');
+    const timer = document.getElementById('timer');
+
+    let countdown = 5;
+
+    // Countdown Timer
+    const interval = setInterval(() => {
+      countdown--;
+      timer.textContent = countdown;
+      if (countdown === 0) {
+        clearInterval(interval);
+        timer.style.display = 'none';
+        animateYearAndMessage();
+      }
+    }, 1000);
+
+    function animateYearAndMessage() {
+      year2025.classList.add('visible');
+      setTimeout(() => {
+        happyNewYear.classList.add('visible');
+        launchFireworks();
+      }, 1000); // Delay to show message after year
+    }
+
+    function launchFireworks() {
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => createFirework(), i * 100);
+      }
+    }
+
+    function createFirework() {
+      const firework = document.createElement('div');
+      firework.classList.add('firework');
+      document.body.appendChild(firework);
+
+      const x = window.innerWidth / 2 + (Math.random() - 0.5) * 300;
+      const y = window.innerHeight / 2 + (Math.random() - 0.5) * 300;
+
+      firework.style.left = `${x}px`;
+      firework.style.top = `${y}px`;
+
+      // Add sparkles
+      for (let i = 0; i < 20; i++) {
+        createSpark(x, y);
+      }
+
+      setTimeout(() => firework.remove(), 1500);
+    }
+
+    function createSpark(x, y) {
+      const spark = document.createElement('div');
+      spark.classList.add('firework', 'spark');
+      document.body.appendChild(spark);
+
+      const offsetX = (Math.random() - 0.5) * 200;
+      const offsetY = (Math.random() - 0.5) * 200;
+
+      spark.style.left = `${x + offsetX}px`;
+      spark.style.top = `${y + offsetY}px`;
+
+      setTimeout(() => spark.remove(), 2000);
+    }
+  </script>
+</body>
+</html>
